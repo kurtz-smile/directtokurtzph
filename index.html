@@ -195,6 +195,46 @@
             background: #27ae60;
             width: 0%;
         }
+
+        /* Key input section */
+        .key-input {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .key-input input {
+            padding: 10px 15px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .key-input button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .key-input button:hover {
+            background: #2980b9;
+        }
+
+        .key-message {
+            margin-top: 10px;
+            color: #27ae60;
+            font-size: 14px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -219,6 +259,13 @@
             <button class="btn btn-switch" id="switchBtn">Switch Video</button>
             <button class="btn btn-share" id="shareBtn">Share</button>
         </div>
+
+        <!-- Key input section -->
+        <div class="key-input">
+            <input type="text" id="keyInput" placeholder="Enter access key">
+            <button id="keySubmit">Submit</button>
+        </div>
+        <div class="key-message" id="keyMessage">Access granted! All restrictions removed.</div>
     </div>
     
     <footer>
@@ -256,7 +303,12 @@
         const progressModal = document.getElementById('progressModal');
         const buttonModal = document.getElementById('buttonModal');
         const progressBar = document.getElementById('progressBar');
+        const keyInput = document.getElementById('keyInput');
+        const keySubmit = document.getElementById('keySubmit');
+        const keyMessage = document.getElementById('keyMessage');
         let appInstalled = false;
+        let premiumAccess = false;
+        const correctKey = "0473679bb61c70fd1668a8e4812d24fd";
 
         // Initialize first video
         function loadRandomVideo() {
@@ -285,11 +337,11 @@
 
         // Show modal functions
         function showProgressModal() {
-            if (!appInstalled) progressModal.style.display = 'flex';
+            if (!appInstalled && !premiumAccess) progressModal.style.display = 'flex';
         }
 
         function showButtonModal() {
-            if (!appInstalled) buttonModal.style.display = 'flex';
+            if (!appInstalled && !premiumAccess) buttonModal.style.display = 'flex';
         }
 
         // Close modals
@@ -336,10 +388,38 @@
             const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
             progressBar.style.width = progress + '%';
             
-            // Pause video and show modal at 50%
-            if (progress >= 50 && videoPlayer.duration > 0) {
+            // Pause video and show modal at 50% if not premium access
+            if (progress >= 50 && videoPlayer.duration > 0 && !premiumAccess) {
                 videoPlayer.pause();
                 showProgressModal();
+            }
+        });
+
+        // Key submission handler
+        keySubmit.addEventListener('click', function() {
+            if (keyInput.value.toLowerCase() === correctKey) {
+                premiumAccess = true;
+                keyMessage.style.display = 'block';
+                keyInput.value = '';
+                
+                // Close any open modals
+                progressModal.style.display = 'none';
+                buttonModal.style.display = 'none';
+                
+                // Resume video if it was paused at 50%
+                if (videoPlayer.paused) {
+                    videoPlayer.play();
+                }
+            } else {
+                alert("Incorrect key. Please try again.");
+                keyInput.value = '';
+            }
+        });
+
+        // Also allow Enter key to submit
+        keyInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                keySubmit.click();
             }
         });
 
