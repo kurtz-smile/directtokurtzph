@@ -235,19 +235,37 @@
             font-size: 14px;
             display: none;
         }
+        
+        /* Video selection dropdown */
+        .video-select {
+            margin-top: 20px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #444;
+            width: 100%;
+            max-width: 400px;
+            font-size: 16px;
+        }
+        
+        .video-select option {
+            padding: 10px;
+            background: #333;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Kurtz PH | Viral Today</h1>
     </header>
-                      <a href="index.html">
-  <img src="/storage/logo.png" alt=Logo" style="height: 0.1px;">
-</a>
+    <a href="index.html">
+        <img src="/storage/logo.png" alt="Logo" style="height: 0.1px;">
+    </a>
     <div class="container">
         <div class="video-container">
             <video id="videoPlayer" controls controlsList="nodownload">
-                <source src="#" type="video/mp4">
+                <source src="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-09.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="progress-container">
@@ -255,8 +273,21 @@
             </div>
         </div>
         
+        <!-- Video selection dropdown -->
+        <select class="video-select" id="videoSelect">
+            <option value="" disabled selected>Select a video...</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-01.mp4">Katrina Lim Video 1</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-02.mp4">Katrina Lim Video 2</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-03.mp4">Katrina Lim Video 3</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-04.mp4">Katrina Lim Video 4</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-05.mp4">Katrina Lim Video 5</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-06.mp4">Katrina Lim Video 6</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-07.mp4">Katrina Lim Video 7</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-08.mp4">Katrina Lim Video 8</option>
+            <option value="https://kurtzph.netlify.app/storage/watch-1/katrina-lim-09.mp4">Katrina Lim Video 9</option>
+        </select>
+        
         <div class="button-group">
-            <button class="btn btn-switch" id="switchBtn">Other Video</button>
             <button class="btn btn-share" id="shareBtn">Share</button>
         </div>
 
@@ -275,37 +306,22 @@
     <!-- 50% Video Progress Modal - No close button -->
     <div id="progressModal" class="modal">
         <div class="modal-content">
-            <h2>Download Our App To Get Access Key!</h2>
-            <p>App not installed? You must turn off Google Play Protection. "Works on Android 10 and below"</p>
-            <button class="modal-btn" id="progressModalDownloadBtn">DOWNLOAD NOW</button>
+            <h2>Purchase Access Key!</h2>
+            <p>To continue watching, please purchase an access key from our Email.</p>
+            <button class="modal-btn" id="progressModalBuyBtn">BUY ACCESS KEY</button>
         </div>
     </div>
 
     <!-- Button Click Modal - With close button -->
     <div id="buttonModal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" id="closeButtonModal">&times;</span>
-            <h2>Download Our App To Get Access Key!</h2>
-            <p>App not installed? You must turn off Google Play Protection. "Works on Android 10 and below"</p>
-            <button class="modal-btn" id="buttonModalDownloadBtn">DOWNLOAD NOW</button>
+            <h2>Purchase Access Key!</h2>
+            <p>To watch selected videos, please purchase an access key from our Email.</p>
+            <button class="modal-btn" id="buttonModalBuyBtn">BUY ACCESS KEY</button>
         </div>
     </div>
     
     <script>
-        // Video sources (replace with your own)
-        const videos = [
-            "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-01.mp4",
-            "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-02.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-03.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-04.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-05.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-06.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-07.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-08.mp4",
-             "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-09.mp4"
-        ];
-        
-        let currentVideoIndex = 0;
         const videoPlayer = document.getElementById('videoPlayer');
         const progressModal = document.getElementById('progressModal');
         const buttonModal = document.getElementById('buttonModal');
@@ -313,69 +329,66 @@
         const keyInput = document.getElementById('keyInput');
         const keySubmit = document.getElementById('keySubmit');
         const keyMessage = document.getElementById('keyMessage');
-        let appInstalled = false;
+        const videoSelect = document.getElementById('videoSelect');
         let premiumAccess = false;
-        const correctKey = "0473679bb61c70fd1668a8e4812d24fd";
+        
+        // This would normally be fetched from key.txt, but for this example we'll simulate it
+        let validKeys = [];
+        
+        // Simulate fetching keys from key.txt
+        function fetchValidKeys() {
+            // In a real implementation, you would fetch this from key.txt
+            // For now, we'll simulate with some example keys
+            validKeys = [
+                "examplekey1",
+                "examplekey2",
+                "examplekey3",
+                // ... more keys from key.txt
+            ];
+        }
+        
+        fetchValidKeys();
 
         // Initialize first video
-        function loadRandomVideo() {
-            currentVideoIndex = Math.floor(Math.random() * videos.length);
-            videoPlayer.src = videos[currentVideoIndex];
+        function loadVideo(url) {
+            videoPlayer.src = url;
             videoPlayer.load();
         }
-        loadRandomVideo();
 
-        // Check if app is installed
-        function checkAppInstalled() {
-            const appDeepLink = "com.kurtz.ph://"; // CHANGE TO YOUR APP'S DEEP LINK
+        // Video selection handler
+        videoSelect.addEventListener('change', function() {
+            if (!premiumAccess) {
+                showButtonModal();
+                videoSelect.value = "";
+                return;
+            }
             
-            // Create hidden iframe to attempt opening the app
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = appDeepLink;
-            document.body.appendChild(iframe);
-            
-            setTimeout(function() {
-                document.body.removeChild(iframe);
-                // If we get here, app is not installed
-                appInstalled = false;
-            }, 500);
-        }
+            const selectedVideo = videoSelect.value;
+            if (selectedVideo) {
+                loadVideo(selectedVideo);
+            }
+        });
 
         // Show modal functions
         function showProgressModal() {
-            if (!appInstalled && !premiumAccess) progressModal.style.display = 'flex';
+            if (!premiumAccess) progressModal.style.display = 'flex';
         }
 
         function showButtonModal() {
-            if (!appInstalled && !premiumAccess) buttonModal.style.display = 'flex';
+            if (!premiumAccess) buttonModal.style.display = 'flex';
         }
 
-        // Close modals
-        document.getElementById('closeButtonModal').addEventListener('click', function() {
-            buttonModal.style.display = 'none';
-        });
+// Modal buy buttons
+document.getElementById('progressModalBuyBtn').addEventListener('click', function() {
+    window.location.href = "mailto:2j1tbqr6@gmail.com?subject=Buy%20Access%20Key&body=Hi%20KurtZ,%0AI%20want%20to%20buy%20an%20access%20key.%20Please%20send%20me%20the%20details.";
+});
 
-        // Modal download buttons
-        document.getElementById('progressModalDownloadBtn').addEventListener('click', function() {
-            window.open("https://kurtzph.netlify.app/storage/kurtzph.apk", "_blank"); // Replace with your download link
-            progressModal.style.display = 'none';
-        });
-
-        document.getElementById('buttonModalDownloadBtn').addEventListener('click', function() {
-            window.open("https://kurtzph.netlify.app/storage/kurtzph.apk", "_blank"); // Replace with your download link
-            buttonModal.style.display = 'none';
-        });
-
-        // Switch Video Button - random video
-        document.getElementById('switchBtn').addEventListener('click', function() {
-            showButtonModal();
-            loadRandomVideo();
-        });
+document.getElementById('buttonModalBuyBtn').addEventListener('click', function() {
+    window.location.href = "mailto:2j1tbqr6@gmail.com?subject=Buy%20Access%20Key&body=Hi%20KurtZ,%0AI%20want%20to%20buy%20an%20access%20key.%20Please%20send%20me%20the%20details.";
+});
         
         // Share Button
         document.getElementById('shareBtn').addEventListener('click', function() {
-            showButtonModal();
             if (navigator.share) {
                 navigator.share({
                     title: 'Check out this video player',
@@ -396,7 +409,7 @@
             progressBar.style.width = progress + '%';
             
             // Pause video and show modal at 50% if not premium access
-            if (progress >= 50 && videoPlayer.duration > 0 && !premiumAccess) {
+            if (progress >= 40 && videoPlayer.duration > 0 && !premiumAccess) {
                 videoPlayer.pause();
                 showProgressModal();
             }
@@ -404,7 +417,10 @@
 
         // Key submission handler
         keySubmit.addEventListener('click', function() {
-            if (keyInput.value.toLowerCase() === correctKey) {
+            const enteredKey = keyInput.value.trim();
+            
+            // Check if key is in the validKeys array
+            if (validKeys.includes(enteredKey)) {
                 premiumAccess = true;
                 keyMessage.style.display = 'block';
                 keyInput.value = '';
@@ -416,6 +432,12 @@
                 // Resume video if it was paused at 50%
                 if (videoPlayer.paused) {
                     videoPlayer.play();
+                }
+                
+                // Remove the used key from the array (optional)
+                const keyIndex = validKeys.indexOf(enteredKey);
+                if (keyIndex > -1) {
+                    validKeys.splice(keyIndex, 1);
                 }
             } else {
                 alert("Incorrect key. Please try again.");
@@ -429,9 +451,6 @@
                 keySubmit.click();
             }
         });
-
-        // Check for app installation on load
-        checkAppInstalled();
 
         // Prevent video download
         document.addEventListener('contextmenu', function(e) {
