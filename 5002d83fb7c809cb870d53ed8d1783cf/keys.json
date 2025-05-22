@@ -1,0 +1,10 @@
+{
+  "keys": [
+    {
+      "key": "admin",
+      "used": false,
+      "expiry": "2025-05-23",
+      "note": "admin"
+    }
+  ]
+}
