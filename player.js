@@ -41,7 +41,7 @@ function initPlayer() {
 
 // Load first available video
 function loadFirstVideo() {
-    const firstVideo = "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-01.mp4";
+    const firstVideo = "https://kurtzph.netlify.app/storage/watch-1/katrina-lim-09.mp4";
     loadVideo(firstVideo);
 }
 
