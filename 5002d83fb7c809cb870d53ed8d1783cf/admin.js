@@ -58,7 +58,7 @@ function handleLogin() {
 
 // Load keys from file
 function loadKeys() {
-    fetch('keys.json')
+    fetch('5002d83fb7c809cb870d53ed8d1783cf/keys.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to load keys');
