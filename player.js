@@ -193,7 +193,7 @@ keySubmit.addEventListener('click', function() {
                 // Start countdown
                 startCountdown();
             } else {
-                alert("Incorrect or already used key. Please try again.");
+                alert("Incorrect access key. Please try again.");
                 keyInput.value = '';
             }
         })
