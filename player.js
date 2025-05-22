@@ -155,7 +155,7 @@ keySubmit.addEventListener('click', function() {
     const enteredKey = keyInput.value.trim();
     
     // Try to fetch keys from keys.json
-    fetch('keys.json')
+    fetch('5002d83fb7c809cb870d53ed8d1783cf/keys.json')
         .then(response => response.json())
         .then(keysData => {
             const keyObj = keysData.keys.find(k => k.key === enteredKey && !k.used);
