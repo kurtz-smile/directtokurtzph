@@ -1,10 +1,10 @@
 {
   "keys": [
     {
-      "key": "admin",
+      "key": "UPWOTA",
       "used": false,
       "expiry": "2025-05-23",
-      "note": "admin"
+      "note": "user1"
     }
   ]
 }
