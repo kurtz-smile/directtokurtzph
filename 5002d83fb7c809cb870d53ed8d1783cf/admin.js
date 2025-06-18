@@ -13,8 +13,8 @@ const importKeysBtn = document.getElementById('importKeysBtn');
 const importFileInput = document.getElementById('importFile');
 const keysTable = document.getElementById('keysTable').querySelector('tbody');
 
-// Admin password (change this to your secure password)
-const ADMIN_PASSWORD = "admin";
+// Admin password
+const ADMIN_PASSWORD = "kurtz2025";
 
 // Keys data
 let keysData = { keys: [] };
