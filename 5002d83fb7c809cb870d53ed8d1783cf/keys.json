@@ -1,0 +1,16 @@
+{
+  "keys": [
+    {
+      "key": "5002d83fb7c809cb870d53ed8d1783cf",
+      "used": false,
+      "expiry": null,
+      "note": "Permanent Key"
+    },
+    {
+      "key": "renren_code",
+      "used": false,
+      "expiry": "2025-12-25",
+      "note": "para kay renren"
+    }
+  ]
+}
